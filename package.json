@@ -1,0 +1,1 @@
+{"dependencies":{"next":"14.2.5","react":"18.3.1","react-dom":"18.3.1"},"description":"My Business Journal — Personal Business Blog CMS with VIP Admin Panel","engines":{"node":">=18.17.0"},"name":"personal-business-blog-cms","private":true,"scripts":{"build":"next build","dev":"next dev","lint":"next lint","start":"next start"},"version":"1.0.0"}
