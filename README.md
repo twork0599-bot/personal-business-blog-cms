@@ -9,14 +9,19 @@ Manrope UI, gold `$` logo, lightning storm only inside the hero panel.
 - **Public site (no admin trace):** Home, About, Contact, post pages, categories,
   search, comments, Copy Link with absolute URL, share to Facebook / WhatsApp / X / LinkedIn.
   Category post counts are **never** shown publicly.
-- **VIP Admin Panel — `/admin` only:** Dashboard, Posts, Write, Visitors,
+- **VIP Admin Panel — `/admin` only (direct URL, no public link):** Dashboard, Posts, Write, Visitors,
   Categories, Comments, Settings, Env Variables. Dark deep-green sidebar with
   VIP badge, stat cards, 7-day traffic chart, category counts (admin-only),
   post publish / edit / delete, comment approve / delete, visitor tracking.
-- **Design:** gold gradient top rule, frosted white sticky header, deep-green
-  hero panel with gold hairline frame, gold Start Reading button, welcome
-  headline, premium pill category chips, Latest Posts with gold eyebrow,
-  deep premium shadows, solid deep-green footer with gold top border.
+  Live at: https://personal-business-blog-cms.vercel.app/admin
+- **Design — same premium system as the admin panel:** dark deep-green sticky
+  header with gold `$` logo and gold underline nav, full-bleed dark masthead
+  with gold hairline, welcome headline and lightning storm only inside the
+  masthead, admin-style stat cards overlapping the masthead, two-column
+  dashboard layout (lead story + horizontal post rows on the left; author,
+  topics, most-read and newsletter cards on the right), premium pill category
+  chips, Latest Posts with gold eyebrow and gold rule, deep premium shadows,
+  solid deep-green footer with gold top border.
 
 ## Run locally
 

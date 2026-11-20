@@ -1,17 +1,17 @@
 'use client';
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { Header, Footer, LightningHero } from '../components/SiteChrome';
+import { Header, Footer, Masthead, StatStrip, AuthorCard, TopicsCard, MostReadCard, NewsletterCard } from '../components/SiteChrome';
 import { CATEGORIES, SEED_POSTS } from '../lib/data';
 
-function postLink(slug) {
+function absolutePostUrl(slug) {
   if (typeof window === 'undefined') return `/post/${slug}`;
-  return `${window.location.origin}${window.location.pathname.replace(/\/$/, '')}/post/${slug}`.replace('/post/', '/post/');
+  return `${window.location.origin}/post/${slug}`;
 }
 
 function ShareButtons({ post }) {
   const [copied, setCopied] = useState(false);
-  const url = typeof window === 'undefined' ? '' : `${window.location.origin}/post/${post.slug}`;
+  const url = absolutePostUrl(post.slug);
   const encoded = encodeURIComponent(url);
   const title = encodeURIComponent(post.title);
   const copy = async () => {
@@ -36,6 +36,22 @@ function ShareButtons({ post }) {
   );
 }
 
+function PostRow({ post }) {
+  return (
+    <article className="post-row">
+      <div className={`post-row-cover ${post.cover === 'gold' ? 'gold' : ''}`}>
+        <span className="cat">{post.category}</span>
+      </div>
+      <div className="post-row-body">
+        <h3><Link href={`/post/${post.slug}`}>{post.title}</Link></h3>
+        <p>{post.excerpt}</p>
+        <div className="meta">{post.author} · {post.date} · {post.readTime}</div>
+        <ShareButtons post={post} />
+      </div>
+    </article>
+  );
+}
+
 export default function HomePage() {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('All');
@@ -48,67 +64,61 @@ export default function HomePage() {
     });
   }, [query, category]);
   const featured = posts.find((p) => p.featured) || posts[0];
+  const rest = posts.filter((p) => p.slug !== featured?.slug);
 
   return (
     <>
       <Header />
+      <Masthead query={query} onQueryChange={setQuery} />
+      <StatStrip totalPosts={SEED_POSTS.length} totalViews="8,431" />
+
       <main className="container">
-        <LightningHero totalPosts={SEED_POSTS.length} totalViews="8,431" />
-        <div className="hero-search" style={{ marginTop: -8 }}>
-          <input
-            type="search"
-            placeholder="Search posts..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            aria-label="Search posts"
-          />
-        </div>
-        <div className="chips" role="tablist" aria-label="Browse by topic">
-          {['All', ...CATEGORIES].map((c) => (
-            <button key={c} className={`chip ${category === c ? 'active' : ''}`} onClick={() => setCategory(c)}>
-              {c === 'All' ? 'All Posts' : c}
-            </button>
-          ))}
-        </div>
-
-        <div className="section-head" id="latest">
-          <span className="eyebrow">Latest Posts</span>
-          <h2>Fresh from the journal</h2>
-        </div>
-
-        {featured && (
-          <article className="card" style={{ marginBottom: 20 }}>
-            <div className={`card-cover ${featured.cover === 'gold' ? 'gold' : ''}`}>
-              <span className="cat">Featured · {featured.category}</span>
+        <div className="layout-2col">
+          <div>
+            <div className="chips" role="tablist" aria-label="Browse by topic">
+              {['All', ...CATEGORIES].map((c) => (
+                <button key={c} className={`chip ${category === c ? 'active' : ''}`} onClick={() => setCategory(c)}>
+                  {c === 'All' ? 'All Posts' : c}
+                </button>
+              ))}
             </div>
-            <div className="card-body">
-              <h3><Link href={`/post/${featured.slug}`}>{featured.title}</Link></h3>
-              <p>{featured.excerpt}</p>
-              <div className="meta">{featured.author} · {featured.date} · {featured.readTime}</div>
-              <ShareButtons post={featured} />
-            </div>
-          </article>
-        )}
 
-        {posts.length === 0 ? (
-          <p>No posts yet. Try a different search or topic.</p>
-        ) : (
-          <div className="grid">
-            {posts.filter((p) => p.slug !== featured?.slug).map((post) => (
-              <article className="card" key={post.slug}>
-                <div className={`card-cover ${post.cover === 'gold' ? 'gold' : ''}`}>
-                  <span className="cat">{post.category}</span>
-                </div>
-                <div className="card-body">
-                  <h3><Link href={`/post/${post.slug}`}>{post.title}</Link></h3>
-                  <p>{post.excerpt}</p>
-                  <div className="meta">{post.author} · {post.date} · {post.readTime}</div>
-                  <ShareButtons post={post} />
-                </div>
-              </article>
-            ))}
+            <div className="section-head" id="latest">
+              <span className="eyebrow">Latest Posts</span>
+              <h2>Fresh from the journal</h2>
+              <div className="rule" />
+              <p>Honest, practical notes — newest first.</p>
+            </div>
+
+            {posts.length === 0 ? (
+              <p>No posts yet. Try a different search or topic.</p>
+            ) : (
+              <>
+                {featured && (
+                  <article className="lead-card">
+                    <div className={`lead-cover ${featured.cover === 'gold' ? 'gold' : ''}`}>
+                      <span className="cat">Featured · {featured.category}</span>
+                    </div>
+                    <div className="lead-body">
+                      <h3><Link href={`/post/${featured.slug}`}>{featured.title}</Link></h3>
+                      <p>{featured.excerpt}</p>
+                      <div className="meta">{featured.author} · {featured.date} · {featured.readTime}</div>
+                      <ShareButtons post={featured} />
+                    </div>
+                  </article>
+                )}
+                {rest.map((post) => <PostRow key={post.slug} post={post} />)}
+              </>
+            )}
           </div>
-        )}
+
+          <div className="sidebar">
+            <AuthorCard />
+            <TopicsCard categories={CATEGORIES} active={category} onSelect={setCategory} />
+            <MostReadCard posts={SEED_POSTS} />
+            <NewsletterCard />
+          </div>
+        </div>
       </main>
       <Footer />
     </>

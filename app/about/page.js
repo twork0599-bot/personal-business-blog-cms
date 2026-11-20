@@ -1,4 +1,4 @@
-import { Header, Footer } from '../../components/SiteChrome';
+import { Header, Footer, PageBand } from '../../components/SiteChrome';
 
 export const metadata = { title: 'About — My Business Journal' };
 
@@ -6,10 +6,13 @@ export default function AboutPage() {
   return (
     <>
       <Header />
+      <PageBand
+        eyebrow="About"
+        title="About My Business Journal"
+        sub="A personal business blog about starting small, staying honest, and building something that lasts."
+      />
       <main className="container">
         <div className="article">
-          <span className="eyebrow" style={{ color: '#0f5132' }}>About</span>
-          <h1>About My Business Journal</h1>
           <p>
             My Business Journal is a personal business blog about starting small,
             staying honest, and building something that lasts. I write about
@@ -25,10 +28,12 @@ export default function AboutPage() {
             This journal is where ideas are tested in public, one small post at a time.
           </p>
           <h2 className="serif">What you will find here</h2>
-          <p>Business — starting, pricing, and serving customers well.<br />
-          Marketing — honest marketing without a big budget.<br />
-          Finance — money habits that compound quietly.<br />
-          Personal — the journey, the mistakes, and the lessons.</p>
+          <div className="contact-cards">
+            <div className="contact-card"><b>Business</b><span>Starting, pricing, and serving customers well.</span></div>
+            <div className="contact-card"><b>Marketing</b><span>Honest marketing without a big budget.</span></div>
+            <div className="contact-card"><b>Finance</b><span>Money habits that compound quietly.</span></div>
+            <div className="contact-card"><b>Personal</b><span>The journey, the mistakes, and the lessons.</span></div>
+          </div>
         </div>
       </main>
       <Footer />

@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Header, Footer } from '../../components/SiteChrome';
+import { Header, Footer, PageBand } from '../../components/SiteChrome';
 
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
@@ -9,14 +9,18 @@ export default function ContactPage() {
   return (
     <>
       <Header />
+      <PageBand
+        eyebrow="Contact"
+        title="Get in touch"
+        sub="Have a question, an idea, or a story to share? Send a message — I read every one."
+      />
       <main className="container">
         <div className="article">
-          <span className="eyebrow" style={{ color: '#0f5132' }}>Contact</span>
-          <h1>Get in touch</h1>
-          <p>Have a question, an idea, or a story to share? Send a message — I read every one.</p>
-          <p><strong>Email:</strong> hello@mybusinessjournal.example<br />
-          <strong>WhatsApp:</strong> Message via the contact form below<br />
-          <strong>Location:</strong> Dhaka, Bangladesh</p>
+          <div className="contact-cards">
+            <div className="contact-card"><b>Email</b><span>hello@mybusinessjournal.example</span></div>
+            <div className="contact-card"><b>WhatsApp</b><span>Message via the contact form below</span></div>
+            <div className="contact-card"><b>Location</b><span>Dhaka, Bangladesh</span></div>
+          </div>
           {sent ? (
             <p style={{ background: '#e6f4ea', padding: 14, borderRadius: 8 }}>Thank you, {name || 'friend'}! Your message was received.</p>
           ) : (

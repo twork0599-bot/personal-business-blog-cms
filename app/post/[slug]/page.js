@@ -2,7 +2,7 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { Header, Footer } from '../../../components/SiteChrome';
+import { Header, Footer, PageBand } from '../../../components/SiteChrome';
 import { SEED_POSTS, SEED_COMMENTS, getPostBySlug } from '../../../lib/data';
 
 export default function PostPage() {
@@ -23,7 +23,8 @@ export default function PostPage() {
     return (
       <>
         <Header />
-        <main className="container"><div className="article"><h1>Post not found</h1><p><Link href="/">← Back to Home</Link></p></div></main>
+        <PageBand eyebrow="Not found" title="Post not found" sub="This story does not exist — or it was moved." />
+        <main className="container"><div className="article"><p><Link href="/">← Back to Home</Link></p></div></main>
         <Footer />
       </>
     );
@@ -38,12 +39,10 @@ export default function PostPage() {
   return (
     <>
       <Header />
+      <PageBand eyebrow={post.category} title={post.title} sub={`${post.author} · ${post.date} · ${post.readTime}`} />
       <main className="container">
         <div className="article">
           <p><Link href="/">← Back to Home</Link></p>
-          <span className="eyebrow" style={{ color: '#0f5132' }}>{post.category}</span>
-          <h1>{post.title}</h1>
-          <p className="meta">{post.author} · {post.date} · {post.readTime}</p>
           {post.content.map((para, i) => <p key={i}>{para}</p>)}
           <div className="card-actions">
             <button className="small-btn" onClick={copyLink}>{copied ? '✓ Copied!' : 'Copy Link'}</button>
@@ -76,17 +75,23 @@ export default function PostPage() {
           )}
         </div>
 
-        <h2 className="serif">More posts</h2>
-        <div className="grid">
-          {SEED_POSTS.filter((p) => p.slug !== post.slug).slice(0, 3).map((p) => (
-            <article className="card" key={p.slug}>
-              <div className="card-body">
-                <h3><Link href={`/post/${p.slug}`}>{p.title}</Link></h3>
-                <p>{p.excerpt}</p>
-              </div>
-            </article>
-          ))}
+        <div className="section-head">
+          <span className="eyebrow">Keep reading</span>
+          <h2>More posts</h2>
+          <div className="rule" />
         </div>
+        {SEED_POSTS.filter((p) => p.slug !== post.slug).slice(0, 3).map((p) => (
+          <article className="post-row" key={p.slug}>
+            <div className={`post-row-cover ${p.cover === 'gold' ? 'gold' : ''}`}>
+              <span className="cat">{p.category}</span>
+            </div>
+            <div className="post-row-body">
+              <h3><Link href={`/post/${p.slug}`}>{p.title}</Link></h3>
+              <p>{p.excerpt}</p>
+              <div className="meta">{p.author} · {p.date} · {p.readTime}</div>
+            </div>
+          </article>
+        ))}
       </main>
       <Footer />
     </>
